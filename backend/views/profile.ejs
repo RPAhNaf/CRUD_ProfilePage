@@ -1,0 +1,378 @@
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>User Profile</title>
+   <style>
+     body {
+       font-family: Arial, sans-serif;
+       background-color: #f0f0f0;
+       margin: 0;
+       padding: 0;
+     }
+ 
+     .profile-container {
+       max-width: 600px;
+       margin: 20px auto;
+       padding: 20px;
+       border: 1px solid #ccc;
+       border-radius: 10px;
+       background-color: #fff;
+       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+     }
+ 
+     h1 {
+       text-align: center;
+       margin-bottom: 20px;
+     }
+ 
+     .profile-image {
+       max-width: 200px;
+       height: auto;
+       display: block;
+       margin: 0 auto 20px;
+       border-radius: 50%;
+     }
+ 
+     .form-field input,
+     .form-field select {
+       width: calc(100% - 16px);
+       padding: 10px;
+       margin: 5px 0 10px;
+       box-sizing: border-box;
+       border: 1px solid #ccc;
+       border-radius: 5px;
+       font-size: 16px;
+     }
+ 
+     .form-field select {
+       appearance: none;
+     }
+ 
+     .form-field label {
+       display: block;
+       margin-bottom: 5px;
+       font-weight: bold;
+     }
+ 
+     .form-field {
+       display: none;
+     }
+ 
+     .display-field {
+       display: block;
+       margin-bottom: 10px;
+     }
+ 
+     .button-container {
+       text-align: center;
+       margin-top: 20px;
+     }
+ 
+     .button-container button {
+       padding: 10px 20px;
+       border: none;
+       border-radius: 5px;
+       background-color: #007bff;
+       color: #fff;
+       font-size: 16px;
+       cursor: pointer;
+       transition: background-color 0.3s ease;
+     }
+ 
+     .button-container button:hover {
+       background-color: #0056b3;
+     }
+ 
+     #editButton {
+       background-color: #28a745;
+     }
+ 
+     #editButton:hover {
+       background-color: #218838;
+     }
+     #changebutton {
+       background-color: #28a745;
+     }
+ 
+     #changebutton:hover {
+       background-color: #218838;
+     }
+     #deleteButton {
+       background-color: #dc3545;
+     }
+ 
+     #deleteButton:hover {
+       background-color: #c82333;
+     }
+     
+   </style>
+   <script>
+    // function toggleEditMode() {
+    //   const editButton = document.getElementById('editButton');
+    //   const fields = document.querySelectorAll('.form-field');
+    //   const displays = document.querySelectorAll('.display-field');
+    //   const isEditing = editButton.textContent === 'Edit';
+
+    //   fields.forEach(field => {
+    //     field.style.display = isEditing ? 'block' : 'none';
+    //   });
+    //   displays.forEach(display => {
+    //     display.style.display = isEditing ? 'none' : 'block';
+    //   });
+    //   editButton.textContent = isEditing ? 'Cancel Edit' : 'Edit';
+
+    //   // Toggle submit button visibility
+    //   document.getElementById('submitButton').style.display = isEditing ? 'block' : 'none';
+    // }
+    function toggleEditMode() {
+      const editButton = document.getElementById('editButton');
+      const fields = document.querySelectorAll('.form-field');
+      const displays = document.querySelectorAll('.display-field');
+      const isEditing = editButton.textContent === 'Edit';
+
+      fields.forEach(field => {
+        field.style.display = isEditing ? 'block' : 'none';
+      });
+      displays.forEach(display => {
+        display.style.display = isEditing ? 'none' : 'block';
+      });
+      editButton.textContent = isEditing ? 'Cancel Edit' : 'Edit';
+
+      // Toggle submit button visibility
+      document.getElementById('submitButton').style.display = isEditing ? 'block' : 'none';
+    }
+
+    function handleFormSubmission(event) {
+      event.preventDefault();
+
+      const form = document.getElementById('profileForm');
+      const formData = new FormData(form);
+      const jsonData = {};
+
+      formData.forEach((value, key) => {
+        jsonData[key] = value;
+      });
+
+      fetch('/api/profile', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(jsonData)
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.error) {
+          alert(data.error);
+        } else {
+          alert(data.message);
+          location.reload(); // Reload the page to reflect changes
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while updating the profile.');
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('profileForm').addEventListener('submit', handleFormSubmission);
+    });
+    function uploadProfileImage() {
+     const fileInput = document.getElementById('newProfileImage');
+     const formData = new FormData();
+     formData.append('newProfileImage', fileInput.files[0]);
+
+     fetch('/api/profile/image', {
+       method: 'POST',
+       body: formData
+     })
+     .then(response => {
+       if (response.ok) {
+         return response.json();
+       }
+       throw new Error('Error uploading profile image');
+     })
+     .then(data => {
+       alert(data.message); // Show success message
+       location.reload(); // Reload the page to reflect the updated image
+     })
+     .catch(error => {
+       console.error('Error:', error);
+       alert('An error occurred while uploading profile image');
+     });
+   }
+   function confirmDelete() {
+      if (confirm('Are you sure you want to delete your account?')) {
+        fetch('/api/profile', {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.error) {
+            alert(data.error);
+          } else {
+            alert(data.message);
+            window.location.href = 'http://localhost:3000/login.html'; // Redirect to the home page after account deletion
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('An error occurred while deleting the account.');
+        });
+      }
+    }
+  </script>
+ </head>
+ <!-- <body>
+   <div class="profile-container">
+     <h1>User Profile</h1>
+     <div>
+       <img src="data:image/jpeg;base64,<%= user.img %>" alt="Profile Image" class="profile-image">
+     </div>
+     <form id="profileForm" action="/api/profile" method="PUT" enctype="multipart/form-data">
+       <div>
+         <p class="display-field"><strong>First Name:</strong> <%= user.fname %></p>
+         <div class="form-field">
+           <label for="newFname">First Name:</label>
+           <input type="text" id="newFname" name="newFname" value="<%= user.fname %>">
+         </div>
+       </div>
+       <div>
+         <p class="display-field"><strong>Last Name:</strong> <%= user.lname %></p>
+         <div class="form-field">
+           <label for="newLname">Last Name:</label>
+           <input type="text" id="newLname" name="newLname" value="<%= user.lname %>">
+         </div>
+       </div>
+       <div>
+         <p class="display-field"><strong>Email:</strong> <%= user.email %></p>
+         <div class="form-field">
+           <label for="newEmail">Email:</label>
+           <input type="email" id="newEmail" name="newEmail" value="<%= user.email %>">
+         </div>
+       </div>
+       <div>
+         <p class="display-field"><strong>Gender:</strong> <%= user.gender %></p>
+         <div class="form-field">
+           <label for="newGender">Gender:</label>
+           <select id="newGender" name="newGender">
+             <option value="male" <%= user.gender === 'male' ? 'selected' : '' %>>Male</option>
+             <option value="female" <%= user.gender === 'female' ? 'selected' : '' %>>Female</option>
+             <option value="other" <%= user.gender === 'other' ? 'selected' : '' %>>Other</option>
+           </select>
+         </div>
+       </div>
+       <div>
+         <p class="display-field"><strong>Date of Birth:</strong> <%= user.dob %></p>
+         <div class="form-field">
+           <label for="newDob">Date of Birth:</label>
+           <input type="date" id="newDob" name="newDob" value="<%= user.dob %>">
+         </div>
+       </div>
+       <div class="form-field">
+         <label for="newPassword">New Password:</label>
+         <input type="password" id="newPassword" name="newPassword">
+       </div>
+       <div class="button-container" id="submitButton" style="display:none;">
+         <button id="changebutton" type="submit">Change Information</button>
+       </div>
+     </form> -->
+     <!-- image upload -->
+     <!-- <div class="button-container">
+        <label for="newProfileImage">Upload Profile Image:</label>
+        <input type="file" id="newProfileImage" name="newProfileImage" accept="image/*" style="margin-bottom: 10px;">
+        <button id="uploadImageButton" onclick="uploadProfileImage()">Upload Image</button>
+      </div>
+
+     <div class="button-container">
+       <button id="editButton" onclick="toggleEditMode()">Edit</button>
+       <button id="deleteButton" onclick="confirmDelete()">Delete Account</button>
+     </div>
+        -->
+     <!-- <form id="logoutForm" action="/logout" method="POST">
+       <div class="button-container">
+         <button type="submit">Logout</button>
+       </div>
+     </form>
+   </div>
+ </body> -->
+ <body>
+  <div class="profile-container">
+    <h1>User Profile</h1>
+    <div>
+      <img src="data:image/jpeg;base64,<%= user.img %>" alt="Profile Image" class="profile-image">
+    </div>
+    <form id="profileForm" enctype="multipart/form-data">
+      <div>
+        <p class="display-field"><strong>First Name:</strong> <%= user.fname %></p>
+        <div class="form-field">
+          <label for="newFname">First Name:</label>
+          <input type="text" id="newFname" name="newFname" value="<%= user.fname %>">
+        </div>
+      </div>
+      <div>
+        <p class="display-field"><strong>Last Name:</strong> <%= user.lname %></p>
+        <div class="form-field">
+          <label for="newLname">Last Name:</label>
+          <input type="text" id="newLname" name="newLname" value="<%= user.lname %>">
+        </div>
+      </div>
+      <div>
+        <p class="display-field"><strong>Email:</strong> <%= user.email %></p>
+        <div class="form-field">
+          <label for="newEmail">Email:</label>
+          <input type="email" id="newEmail" name="newEmail" value="<%= user.email %>">
+        </div>
+      </div>
+      <div>
+        <p class="display-field"><strong>Gender:</strong> <%= user.gender %></p>
+        <div class="form-field">
+          <label for="newGender">Gender:</label>
+          <select id="newGender" name="newGender">
+            <option value="male" <%= user.gender === 'male' ? 'selected' : '' %>>Male</option>
+            <option value="female" <%= user.gender === 'female' ? 'selected' : '' %>>Female</option>
+            <option value="other" <%= user.gender === 'other' ? 'selected' : '' %>>Other</option>
+          </select>
+        </div>
+      </div>
+      <div>
+        <p class="display-field"><strong>Date of Birth:</strong> <%= user.dob %></p>
+        <div class="form-field">
+          <label for="newDob">Date of Birth:</label>
+          <input type="date" id="newDob" name="newDob" value="<%= user.dob %>">
+        </div>
+      </div>
+      <div class="form-field">
+        <label for="newPassword">New Password:</label>
+        <input type="password" id="newPassword" name="newPassword">
+      </div>
+      <div class="button-container" id="submitButton" style="display:none;">
+        <button id="changebutton" type="submit">Change Information</button>
+      </div>
+    </form>
+    <!-- image upload -->
+    <div class="button-container">
+      <label for="newProfileImage">Upload Profile Image:</label>
+      <input type="file" id="newProfileImage" name="newProfileImage" accept="image/*" style="margin-bottom: 10px;">
+      <button id="uploadImageButton" onclick="uploadProfileImage()">Upload Image</button>
+    </div>
+    <div class="button-container">
+      <button id="editButton" onclick="toggleEditMode()">Edit</button>
+      <button id="deleteButton" onclick="confirmDelete()">Delete Account</button>
+    </div>
+    <form id="logoutForm" action="/logout" method="POST">
+      <div class="button-container">
+        <button type="submit">Logout</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>
+ </html>
+ 

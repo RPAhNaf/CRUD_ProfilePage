@@ -1,0 +1,334 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .profile-container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+    }
+    .profile-image {
+      max-width: 200px;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+      border-radius: 50%;
+    }
+    .form-field input,
+    .form-field select {
+      width: 100%;
+      padding: 8px;
+      margin: 5px 0;
+      box-sizing: border-box;
+    }
+    .form-field {
+      display: none;
+    }
+    .display-field {
+      display: block;
+    }
+  </style>
+  <script>
+    function toggleEditMode() {
+      const editButton = document.getElementById('editButton');
+      const fields = document.querySelectorAll('.form-field');
+      const displays = document.querySelectorAll('.display-field');
+      const isEditing = editButton.textContent === 'Edit';
+
+      fields.forEach(field => {
+        field.style.display = isEditing ? 'block' : 'none';
+      });
+      displays.forEach(display => {
+        display.style.display = isEditing ? 'none' : 'block';
+      });
+      editButton.textContent = isEditing ? 'Cancel Edit' : 'Edit';
+
+      // Toggle submit button visibility
+      document.getElementById('submitButton').style.display = isEditing ? 'block' : 'none';
+    }
+
+    function confirmDelete() {
+      if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+        document.getElementById('deleteForm').submit();
+      }
+    }
+  </script>
+</head>
+<body>
+  <div class="profile-container">
+    <h1>User Profile</h1>
+    <div>
+      <img src="data:image/jpeg;base64,<%= user.img %>" alt="Profile Image" class="profile-image">
+    </div>
+    <form id="profileForm" action="/profile/update" method="POST" enctype="multipart/form-data">
+      <div>
+        <p class="display-field"><strong>First Name:</strong> <%= user.fname %></p>
+        <div class="form-field">
+          <label for="newFname">First Name:</label>
+          <input type="text" id="newFname" name="newFname" value="<%= user.fname %>">
+        </div>
+      </div>
+      <div>
+        <p class="display-field"><strong>Last Name:</strong> <%= user.lname %></p>
+        <div class="form-field">
+          <label for="newLname">Last Name:</label>
+          <input type="text" id="newLname" name="newLname" value="<%= user.lname %>">
+        </div>
+      </div>
+      <div>
+        <p class="display-field"><strong>Email:</strong> <%= user.email %></p>
+        <div class="form-field">
+          <label for="newEmail">Email:</label>
+          <input type="email" id="newEmail" name="newEmail" value="<%= user.email %>">
+        </div>
+      </div>
+      <div>
+        <p class="display-field"><strong>Gender:</strong> <%= user.gender %></p>
+        <div class="form-field">
+          <label for="newGender">Gender:</label>
+          <select id="newGender" name="newGender">
+            <option value="male" <%= user.gender === 'male' ? 'selected' : '' %>>Male</option>
+            <option value="female" <%= user.gender === 'female' ? 'selected' : '' %>>Female</option>
+            <option value="other" <%= user.gender === 'other' ? 'selected' : '' %>>Other</option>
+          </select>
+        </div>
+      </div>
+      <div>
+        <p class="display-field"><strong>Date of Birth:</strong> <%= user.dob %></p>
+        <div class="form-field">
+          <label for="newDob">Date of Birth:</label>
+          <input type="date" id="newDob" name="newDob" value="<%= user.dob %>">
+        </div>
+      </div>
+      <div class="form-field">
+        <label for="newPassword">New Password:</label>
+        <input type="password" id="newPassword" name="newPassword">
+      </div>
+      <div class="form-field">
+        <label for="newProfileImage">New Profile Image:</label>
+        <input type="file" id="newProfileImage" name="newProfileImage" accept="image/*">
+      </div>
+      <div class="form-field" id="submitButton" style="display:none;">
+        <button type="submit">Change Information</button>
+      </div>
+    </form>
+    <button id="editButton" onclick="toggleEditMode()">Edit</button>
+    <button onclick="confirmDelete()">Delete Account</button>
+    <form id="deleteForm" action="/profile/delete" method="POST" style="display: none;"></form>
+    <form id="logoutForm" action="/logout" method="POST">
+      <button type="submit">Logout</button>
+    </form>
+  </div>
+</body>
+</html>
+ -->
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>User Profile</title>
+   <style>
+     body {
+       font-family: Arial, sans-serif;
+       background-color: #f0f0f0;
+       margin: 0;
+       padding: 0;
+     }
+ 
+     .profile-container {
+       max-width: 600px;
+       margin: 20px auto;
+       padding: 20px;
+       border: 1px solid #ccc;
+       border-radius: 10px;
+       background-color: #fff;
+       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+     }
+ 
+     h1 {
+       text-align: center;
+       margin-bottom: 20px;
+     }
+ 
+     .profile-image {
+       max-width: 200px;
+       height: auto;
+       display: block;
+       margin: 0 auto 20px;
+       border-radius: 50%;
+     }
+ 
+     .form-field input,
+     .form-field select {
+       width: calc(100% - 16px);
+       padding: 10px;
+       margin: 5px 0 10px;
+       box-sizing: border-box;
+       border: 1px solid #ccc;
+       border-radius: 5px;
+       font-size: 16px;
+     }
+ 
+     .form-field select {
+       appearance: none;
+     }
+ 
+     .form-field label {
+       display: block;
+       margin-bottom: 5px;
+       font-weight: bold;
+     }
+ 
+     .form-field {
+       display: none;
+     }
+ 
+     .display-field {
+       display: block;
+       margin-bottom: 10px;
+     }
+ 
+     .button-container {
+       text-align: center;
+       margin-top: 20px;
+     }
+ 
+     .button-container button {
+       padding: 10px 20px;
+       border: none;
+       border-radius: 5px;
+       background-color: #007bff;
+       color: #fff;
+       font-size: 16px;
+       cursor: pointer;
+       transition: background-color 0.3s ease;
+     }
+ 
+     .button-container button:hover {
+       background-color: #0056b3;
+     }
+ 
+     #editButton {
+       background-color: #28a745;
+     }
+ 
+     #editButton:hover {
+       background-color: #218838;
+     }
+ 
+     #deleteButton {
+       background-color: #dc3545;
+     }
+ 
+     #deleteButton:hover {
+       background-color: #c82333;
+     }
+   </style>
+   <script>
+    function toggleEditMode() {
+      const editButton = document.getElementById('editButton');
+      const fields = document.querySelectorAll('.form-field');
+      const displays = document.querySelectorAll('.display-field');
+      const isEditing = editButton.textContent === 'Edit';
+
+      fields.forEach(field => {
+        field.style.display = isEditing ? 'block' : 'none';
+      });
+      displays.forEach(display => {
+        display.style.display = isEditing ? 'none' : 'block';
+      });
+      editButton.textContent = isEditing ? 'Cancel Edit' : 'Edit';
+
+      // Toggle submit button visibility
+      document.getElementById('submitButton').style.display = isEditing ? 'block' : 'none';
+    }
+
+    function confirmDelete() {
+      if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+        document.getElementById('deleteForm').submit();
+      }
+    }
+  </script>
+ </head>
+ <body>
+   <div class="profile-container">
+     <h1>User Profile</h1>
+     <div>
+       <img src="data:image/jpeg;base64,<%= user.img %>" alt="Profile Image" class="profile-image">
+     </div>
+     <form id="profileForm" action="/profile/update" method="POST" enctype="multipart/form-data">
+       <div>
+         <p class="display-field"><strong>First Name:</strong> <%= user.fname %></p>
+         <div class="form-field">
+           <label for="newFname">First Name:</label>
+           <input type="text" id="newFname" name="newFname" value="<%= user.fname %>">
+         </div>
+       </div>
+       <div>
+         <p class="display-field"><strong>Last Name:</strong> <%= user.lname %></p>
+         <div class="form-field">
+           <label for="newLname">Last Name:</label>
+           <input type="text" id="newLname" name="newLname" value="<%= user.lname %>">
+         </div>
+       </div>
+       <div>
+         <p class="display-field"><strong>Email:</strong> <%= user.email %></p>
+         <div class="form-field">
+           <label for="newEmail">Email:</label>
+           <input type="email" id="newEmail" name="newEmail" value="<%= user.email %>">
+         </div>
+       </div>
+       <div>
+         <p class="display-field"><strong>Gender:</strong> <%= user.gender %></p>
+         <div class="form-field">
+           <label for="newGender">Gender:</label>
+           <select id="newGender" name="newGender">
+             <option value="male" <%= user.gender === 'male' ? 'selected' : '' %>>Male</option>
+             <option value="female" <%= user.gender === 'female' ? 'selected' : '' %>>Female</option>
+             <option value="other" <%= user.gender === 'other' ? 'selected' : '' %>>Other</option>
+           </select>
+         </div>
+       </div>
+       <div>
+         <p class="display-field"><strong>Date of Birth:</strong> <%= user.dob %></p>
+         <div class="form-field">
+           <label for="newDob">Date of Birth:</label>
+           <input type="date" id="newDob" name="newDob" value="<%= user.dob %>">
+         </div>
+       </div>
+       <div class="form-field">
+         <label for="newPassword">New Password:</label>
+         <input type="password" id="newPassword" name="newPassword">
+       </div>
+       <div class="form-field">
+         <label for="newProfileImage">New Profile Image:</label>
+         <input type="file" id="newProfileImage" name="newProfileImage" accept="image/*">
+       </div>
+       <div class="form-field" id="submitButton" style="display:none;">
+         <button type="submit">Change Information</button>
+       </div>
+     </form>
+     <div class="button-container">
+       <button id="editButton" onclick="toggleEditMode()">Edit</button>
+       <button id="deleteButton" onclick="confirmDelete()">Delete Account</button>
+     </div>
+     <form id="deleteForm" action="/profile/delete" method="POST" style="display: none;"></form>
+     <form id="logoutForm" action="/logout" method="POST">
+       <div class="button-container">
+         <button type="submit">Logout</button>
+       </div>
+     </form>
+   </div>
+ </body>
+ </html>
+ 

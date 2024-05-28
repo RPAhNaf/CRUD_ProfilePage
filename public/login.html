@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Login Page</title>
+</head>
+<style>
+    .loginbutton {
+      background-color: #4caf50; 
+      width: 95%;
+      color: white;
+      padding: 10px;
+      text-align: center;
+      font-size: 16px;
+      margin: 4px 2px;
+      border:15px;
+      cursor: pointer;
+    }
+    .linktext{
+        color:#007bff;
+        cursor: pointer;
+        font-family: Arial,sans-serif;
+    }
+    .div1 {
+     background-color: #fff;
+     width: 400px;
+     border: 15px;
+     padding: 20px;
+     margin: 50px auto;
+     color:black;
+     font-family: Arial,sans-serif;
+     box-shadow: 0px 0px 10px 0px rgba(0,0,0,1);
+    }
+    .background1{
+        background-color: #f4f4f4;
+    }
+    .textbox1{
+        width: 90%;
+        padding: 10px;
+        border-radius: 3px;
+        border: solid #ccc;
+        font-size:15px;
+    }
+
+</style>
+<body class="background1">
+<div>
+<div class="div1">
+<h1 align="center">Login Form</h1>
+<p><label for="email">Email:</label></p>
+    <input type="text" id="email" class="textbox1" required><br>
+<p><label for="password">Password:</label></p>
+    <input type="password" id="password" class="textbox1"  required>
+<p ><button id="loginbutton" onclick="loginfunc()" class="loginbutton">Login</button></p>
+<p align = center >Don't have an account? <a href="RegistrationForm.html" class="linktext">Register</a></p>
+</div></div>
+  
+<script src="loginpage.js"></script>
+</body>
+</html> 
