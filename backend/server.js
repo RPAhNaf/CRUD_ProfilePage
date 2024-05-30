@@ -28,8 +28,7 @@ app.use(session({
 const pool = mysql.createPool({
   host: 'localhost',
   user: 'root',
- 
-  database: 'hr'
+  database: 'exampledb'
 });
 
 const storage = multer.memoryStorage();
