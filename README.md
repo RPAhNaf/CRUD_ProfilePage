@@ -4,7 +4,7 @@ CRUD Express REST API Creation and Profile Page Design
 # **Instructions :**
 1. Install all the dependencies dependencies inside the backend folder using the following command- <br/>
 ```
-npm install express express-session body-parser bcrypt mysql multer path cors ejs
+npm install express express-session body-parser bcrypt mysql multer path cors ejs moment moment-timezone
 ```
 2. Create a database and a table in MySQL that has the fields - <br/>
 	&nbsp;&emsp;&emsp;  i)   &ensp;&ensp;fname 		&emsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;varchar(50) <br/> 	
