@@ -6,6 +6,7 @@ const mysql = require('mysql');
 const multer = require('multer');
 const path = require('path');
 const cors = require('cors');
+const moment = require('moment-timezone');
 
 const app = express();
 const saltRounds = 10;
@@ -28,7 +29,8 @@ app.use(session({
 const pool = mysql.createPool({
   host: 'localhost',
   user: 'root',
-  database: 'exampledb'
+  database: 'exampledb',
+  timezone: '+06:00' // Set timezone to local timezone
 });
 
 const storage = multer.memoryStorage();
@@ -108,14 +110,14 @@ app.get('/api/profile', (req, res) => {
 
     const user = result[0];
     const dobDate = new Date(user.dob);
-    const formattedDob = dobDate.toISOString().split('T')[0];
+    const cdob = moment(user.dob).tz('Asia/Dhaka').format('YYYY-MM-DD'); // Convert to local timezone
     res.render('profile', {
       user: {
         fname: user.fname,
         lname: user.lname,
         email: user.email,
         gender: user.gender,
-        dob: formattedDob,
+        dob: cdob,
         img: user.img.toString('base64')
       }
     });
