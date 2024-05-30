@@ -3,7 +3,9 @@ CRUD Express REST API Creation and Profile Page Design
 
 # **Instructions :**
 1. Install all the dependencies dependencies inside the backend folder using the following command- <br/>
-  &emsp; &emsp;    "npm install express express-session body-parser bcrypt mysql multer path cors ejs"<br/><br/>
+```
+npm install express express-session body-parser bcrypt mysql multer path cors ejs moment moment-timezone
+```
 2. Create a database and a table in MySQL that has the fields - <br/>
 	&nbsp;&emsp;&emsp;  i)   &ensp;&ensp;fname 		&emsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;varchar(50) <br/> 	
 	&emsp;&emsp; ii) 	&ensp;&ensp;lname 		&nbsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;varchar(50) <br/> 	 	
@@ -62,7 +64,7 @@ Request Body:
     dob (string): Date of birth of the user (format: YYYY-MM-DD)
     email (string): Email of the user
     password (string): Password of the user
-    image (file): Profile image of the user (optional)
+    image (file): Profile image of the user
 
 Response:
 
@@ -114,8 +116,7 @@ Request Body:
     newEmail (string): New email of the user
     newGender (string): New gender of the user
     newDob (string): New date of birth of the user (format: YYYY-MM-DD)
-    newPassword (string): New password of the user (optional)
-
+    newPassword (string): New password of the user 
 Response:
 
     200 OK: Profile updated successfully
