@@ -64,7 +64,7 @@ Request Body:
     dob (string): Date of birth of the user (format: YYYY-MM-DD)
     email (string): Email of the user
     password (string): Password of the user
-    image (file): Profile image of the user (optional)
+    image (file): Profile image of the user
 
 Response:
 
@@ -116,8 +116,7 @@ Request Body:
     newEmail (string): New email of the user
     newGender (string): New gender of the user
     newDob (string): New date of birth of the user (format: YYYY-MM-DD)
-    newPassword (string): New password of the user (optional)
-
+    newPassword (string): New password of the user 
 Response:
 
     200 OK: Profile updated successfully
