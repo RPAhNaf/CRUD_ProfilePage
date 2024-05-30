@@ -109,23 +109,6 @@
      
    </style>
    <script>
-    // function toggleEditMode() {
-    //   const editButton = document.getElementById('editButton');
-    //   const fields = document.querySelectorAll('.form-field');
-    //   const displays = document.querySelectorAll('.display-field');
-    //   const isEditing = editButton.textContent === 'Edit';
-
-    //   fields.forEach(field => {
-    //     field.style.display = isEditing ? 'block' : 'none';
-    //   });
-    //   displays.forEach(display => {
-    //     display.style.display = isEditing ? 'none' : 'block';
-    //   });
-    //   editButton.textContent = isEditing ? 'Cancel Edit' : 'Edit';
-
-    //   // Toggle submit button visibility
-    //   document.getElementById('submitButton').style.display = isEditing ? 'block' : 'none';
-    // }
     function toggleEditMode() {
       const editButton = document.getElementById('editButton');
       const fields = document.querySelectorAll('.form-field');
@@ -229,79 +212,6 @@
     }
   </script>
  </head>
- <!-- <body>
-   <div class="profile-container">
-     <h1>User Profile</h1>
-     <div>
-       <img src="data:image/jpeg;base64,<%= user.img %>" alt="Profile Image" class="profile-image">
-     </div>
-     <form id="profileForm" action="/api/profile" method="PUT" enctype="multipart/form-data">
-       <div>
-         <p class="display-field"><strong>First Name:</strong> <%= user.fname %></p>
-         <div class="form-field">
-           <label for="newFname">First Name:</label>
-           <input type="text" id="newFname" name="newFname" value="<%= user.fname %>">
-         </div>
-       </div>
-       <div>
-         <p class="display-field"><strong>Last Name:</strong> <%= user.lname %></p>
-         <div class="form-field">
-           <label for="newLname">Last Name:</label>
-           <input type="text" id="newLname" name="newLname" value="<%= user.lname %>">
-         </div>
-       </div>
-       <div>
-         <p class="display-field"><strong>Email:</strong> <%= user.email %></p>
-         <div class="form-field">
-           <label for="newEmail">Email:</label>
-           <input type="email" id="newEmail" name="newEmail" value="<%= user.email %>">
-         </div>
-       </div>
-       <div>
-         <p class="display-field"><strong>Gender:</strong> <%= user.gender %></p>
-         <div class="form-field">
-           <label for="newGender">Gender:</label>
-           <select id="newGender" name="newGender">
-             <option value="male" <%= user.gender === 'male' ? 'selected' : '' %>>Male</option>
-             <option value="female" <%= user.gender === 'female' ? 'selected' : '' %>>Female</option>
-             <option value="other" <%= user.gender === 'other' ? 'selected' : '' %>>Other</option>
-           </select>
-         </div>
-       </div>
-       <div>
-         <p class="display-field"><strong>Date of Birth:</strong> <%= user.dob %></p>
-         <div class="form-field">
-           <label for="newDob">Date of Birth:</label>
-           <input type="date" id="newDob" name="newDob" value="<%= user.dob %>">
-         </div>
-       </div>
-       <div class="form-field">
-         <label for="newPassword">New Password:</label>
-         <input type="password" id="newPassword" name="newPassword">
-       </div>
-       <div class="button-container" id="submitButton" style="display:none;">
-         <button id="changebutton" type="submit">Change Information</button>
-       </div>
-     </form> -->
-     <!-- image upload -->
-     <!-- <div class="button-container">
-        <label for="newProfileImage">Upload Profile Image:</label>
-        <input type="file" id="newProfileImage" name="newProfileImage" accept="image/*" style="margin-bottom: 10px;">
-        <button id="uploadImageButton" onclick="uploadProfileImage()">Upload Image</button>
-      </div>
-
-     <div class="button-container">
-       <button id="editButton" onclick="toggleEditMode()">Edit</button>
-       <button id="deleteButton" onclick="confirmDelete()">Delete Account</button>
-     </div>
-        -->
-     <!-- <form id="logoutForm" action="/logout" method="POST">
-       <div class="button-container">
-         <button type="submit">Logout</button>
-       </div>
-     </form>
-   </div>
- </body> -->
  <body>
   <div class="profile-container">
     <h1>User Profile</h1>
@@ -352,17 +262,19 @@
         <label for="newPassword">New Password:</label>
         <input type="password" id="newPassword" name="newPassword">
       </div>
+      <!-- image upload -->
+      <div class="button-container">
+      <label for="newProfileImage">Upload Profile Image:</label>
+      <input type="file" id="newProfileImage" name="newProfileImage" accept="image/*" style="margin-bottom: 10px;">
+      <button id="uploadImageButton" onclick="uploadProfileImage()">Update Image</button>
+      <p>(File size must be less than 500 KB)</p>
+    </div>
       <div class="button-container" id="submitButton" style="display:none;">
         <button id="changebutton" type="submit">Change Information</button>
       </div>
     </form>
-    <!-- image upload -->
-    <div class="button-container">
-      <label for="newProfileImage">Upload Profile Image:</label>
-      <input type="file" id="newProfileImage" name="newProfileImage" accept="image/*" style="margin-bottom: 10px;">
-      <button id="uploadImageButton" onclick="uploadProfileImage()">Upload Image</button>
-    </div>
-    <div class="button-container">
+    
+    <div class="button-container" >
       <button id="editButton" onclick="toggleEditMode()">Edit</button>
       <button id="deleteButton" onclick="confirmDelete()">Delete Account</button>
     </div>
